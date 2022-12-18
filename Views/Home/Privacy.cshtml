@@ -1,0 +1,53 @@
+﻿<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+
+<div class="dropzone" id="dropzone"></div>
+<script>
+    var dz = new Dropzone("#dropzone", {
+        url: 'upload/images',
+        autoProcessQueue: false,
+        init: function () {
+            $.ajax({
+                url: "/GetUrlImage",
+                type: "GET",
+                success: function (res) {
+                    console.log('res :>> ', res);
+                }
+            })
+        }
+    })
+</script>
+<style>
+    .dropzone {
+        border-radius: 4px;
+        border: 2px dashed #0087f7 !important;
+        width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1em;
+    }
+
+    .dz-image img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .dropzone.dz-clickable .dz-message {
+        display: none;
+    }
+
+    #mytmp .dz-remove {
+        z-index: 999;
+        position: absolute;
+        display: block;
+        top: 0%;
+        left: 0%;
+        margin-left: -1px;
+        margin-top: -16px;
+    }
+
+    #mytmp .dz-remove svg {
+        fill: #444;
+        cursor: pointer;
+    }
+</style>

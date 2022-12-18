@@ -1,0 +1,863 @@
+﻿<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+
+<div class="dropzone" id="dropzone"></div>
+<div style="display:none;" id="my-template">
+    <div id="mytmp" class="dz-preview dz-file-preview">
+        <div class="dz-image"><img data-dz-thumbnail /></div>
+        <div class="dz-details">
+            <div class="dz-size"><span data-dz-size></span></div>
+            <div class="dz-filename"><span data-dz-name></span></div>
+        </div>
+        <!-- <div class="dz-progress">
+            <span class="dz-upload" data-dz-uploadprogress></span>
+        </div> -->
+        <div class="dz-error-message"><span data-dz-errormessage></span></div>
+        <div class="dz-success-mark">
+            <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                <title>Check</title>
+                <desc>Created with Sketch.</desc>
+                <defs></defs>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                    <path d="M23.5,31.8431458 L17.5852419,25.9283877 
+                    C16.0248253,24.3679711 13.4910294,24.366835 
+                    11.9289322,25.9289322 C10.3700136,27.4878508 
+                    10.3665912,30.0234455 11.9283877,31.5852419 
+                    L20.4147581,40.0716123 C20.5133999,40.1702541 
+                    20.6159315,40.2626649 20.7218615,40.3488435 
+                    C22.2835669,41.8725651 24.794234,41.8626202 
+                    26.3461564,40.3106978 L43.3106978,23.3461564 
+                    C44.8771021,21.7797521 44.8758057,19.2483887 
+                    43.3137085,17.6862915 C41.7547899,16.1273729 
+                    39.2176035,16.1255422 37.6538436,17.6893022 
+                    L23.5,31.8431458 Z M27,53 C41.3594035,53 53,
+                    41.3594035 53,27 C53,12.6405965 41.3594035,
+                    1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,
+                    41.3594035 12.6405965,53 27,53 Z" id="Oval-2" stroke-opacity="0.198794158" stroke="#747474"
+                        fill-opacity="0.816519475" fill="#FFFFFF" sketch:type="MSShapeGroup">
+                    </path>
+                </g>
+            </svg>
+        </div>
+        <div class="dz-error-mark">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <circle cx="12" cy="19" r="2" />
+                <path d="M10 3h4v12h-4z" />
+            </svg>
+        </div>
+        <div class="dz-remove" data-dz-remove>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 
+                    14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 
+                    12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 
+                    10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 
+                    0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+            </svg>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <button class="btn btn-xs btn-success" onclick="Submit()">Submit</button>
+</div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- <label for="" id="lbl1">label 1</label>
+                <input type="text" id="name1" /> -->
+                <select name="" id="course" onchange="SelectCourseChange()" style="width: 150px;">
+                </select>
+                <select name="" id="level" style="width: 150px;">
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button onclick="submit()">Submit</button>
+<script>
+
+    // TODO
+    // 1. get list data for select control
+    // 2. select change
+
+    var lstCourses = [
+        { name: "Course 1", value: 1 },
+        { name: "Course 2", value: 2 },
+        { name: "Course 3", value: 3 },
+    ]
+
+    var c1Levels = [
+        { name: "Course 1 - lv1", value: 1 },
+        { name: "Course 1 - lv2", value: 2 },
+        { name: "Course 1 - lv3", value: 3 },
+        { name: "Course 1 - lv4", value: 4 },
+        { name: "Course 1 - lv5", value: 5 },
+    ]
+    var c2Levels = [
+        { name: "Course 2 - lv1", value: 1 },
+        { name: "Course 2 - lv2", value: 2 },
+        { name: "Course 2 - lv3", value: 3 },
+    ]
+    var c3Levels = [
+        { name: "Course 3 - lv1", value: 1 },
+        { name: "Course 3 - lv2", value: 2 },
+        { name: "Course 3 - lv3", value: 3 },
+        { name: "Course 3 - lv4", value: 4 },
+    ]
+
+    // TODO: select course change event
+    function SelectCourseChange() {
+        let courseValue = document.getElementById("course");
+        console.log('courseValue :>> ', typeof courseValue.value);
+        console.log('courseValue.text :>> ', courseValue.options[courseValue.selectedIndex].text);
+        if (courseValue.value > 0) {
+            let level = document.getElementById("level");
+            level.innerHTML = '';
+            switch (parseInt(courseValue.value)) {
+                case 1:
+                    c1Levels.forEach(element => {
+                        let opt1 = document.createElement("option");
+                        opt1.text = element.name;
+                        opt1.value = element.value;
+                        level.appendChild(opt1);
+                    });
+                    break;
+                case 2:
+                    c2Levels.forEach(element => {
+                        let opt2 = document.createElement("option");
+                        opt2.text = element.name;
+                        opt2.value = element.value;
+                        level.appendChild(opt2);
+                    });
+                    break;
+                default:
+                    c3Levels.forEach(element => {
+                        let opt3 = document.createElement("option");
+                        opt3.text = element.name;
+                        opt3.value = element.value;
+                        level.appendChild(opt3);
+                    });
+                    break;
+            }
+        }
+    }
+
+    // TODO: initialize modal
+    function submit() {
+        let course = document.getElementById("course")
+        course.innerHTML = '';
+        lstCourses.forEach(element => {
+            let opt = document.createElement("option");
+            opt.text = element.name;
+            opt.value = element.value;
+            course.appendChild(opt);
+        });
+        SelectCourseChange();
+        course.value = 2;
+        let level = document.getElementById("level");
+        level.value = 3;
+        // let modal = document.getElementById("staticBackdrop");
+        // $("#staticBackdrop").on("show.bs.modal", function () {
+        //     $("#name").trigger("focus")
+        // });
+        // modal.show()
+        // $("#staticBackdrop").modal('show')
+        // $(document).on('show.bs.modal', "#staticBackdrop", function () {
+        //     console.log("tst")
+        // })
+
+        // document.getElementById("name1").focus();
+
+        const modal = new bootstrap.Modal("#staticBackdrop", {
+            keyboard: true,
+            backdrop: 'static'
+        });
+        modal.show();
+
+        const modalEl = document.getElementById("staticBackdrop");
+        modalEl.addEventListener("shown.bs.modal", function () {
+            // const inputEl = document.getElementById("name1");
+            // inputEl.focus();
+        })
+
+
+    }
+
+
+
+    // TODO: 
+    // 1. get files from local folder   ==> done
+    // 2. display image to dropzone     ==> done
+    // 3. submit current images         
+    //  3.1 delete old file
+    //  3.2 add new file
+
+    let deletedFiles = [];
+
+    function Submit() {
+        if (Dropzone.instances.length > 0) {
+            let dz = Dropzone.instances[0];
+            if (dz.getQueuedFiles().length > 0) {
+                dz.processQueue();
+            }
+        } else {
+            let dz = InitialDropzone();
+            if (dz.getQueuedFiles().length > 0) {
+                dz.processQueue();
+            }
+        }
+
+
+    }
+
+    function myParaName() {
+        return "files";
+    }
+    // initialize dropzone
+    function InitialDropzone() {
+        var dz = new Dropzone("#dropzone", {
+            paramName: myParaName(),
+            url: 'Home/UploadFiles',
+            autoProcessQueue: false,
+            maxFiles: 10,
+            parallelUploads: 10,
+            maxFilesize: 10,
+            previewTemplate: document.getElementById("my-template").innerHTML,
+            dictFileTooBig: "Dung lượng quá lớn ({{filesize}}MB). dung lượng tối đa {{maxFilesize}} MB",
+            dictMaxFilesExceeded: "Tối đa cho phép 10 files",
+            thumbnailMethod: 'contain',
+            // resizeMethod: 'contain'
+            // thumbnailHeight: 240
+            renameFile: function (file) {
+                const myArray = file.name.split('.');
+                let ext = myArray[1];
+                return file.name = Date.now().toString() + "." + ext;
+            }
+        })
+        // listen events
+        // added every file
+        dz.on("addedfile", function (file) {
+            console.log('file :>> ', file);
+        })
+
+        // added files
+        dz.on("addedfiles", function (files) {
+            console.log('files :>> ', files);
+        })
+
+        // remove file 
+        dz.on("removedfile", function (file) {
+            console.log(file)
+            $.ajax({
+                url: 'Home/RemoveFile',
+                type: "POST",
+                data: { fileName: file.name },
+                success: function (res) {
+                    console.log('res :>> ', res);
+                }
+            })
+        })
+
+        // rename file
+        dz.on("renameFile", function (file) {
+            console.log('file-rename :>> ', file);
+            return Date.now();
+        })
+
+        return dz;
+
+
+    }
+
+    // call server
+    async function CallServer() {
+        const data = await $.ajax({
+            url: "Home/GetUrlImage",
+            type: "GET",
+            success: function (res) {
+                return res
+            }
+        })
+        console.log('data :>> ', data);
+        return data;
+    }
+
+    // display image
+    async function DisplayFile() {
+        let dropzone = InitialDropzone();
+        let data = await CallServer();
+        $.each(data, function (key, value) {
+            dropzone.emit("addedfile", value)
+            dropzone.emit("thumbnail", value, value.url)
+            dropzone.emit("complete", value)
+        })
+        console.log('dropzone.files :>> ', dropzone.files);
+    }
+
+    DisplayFile();
+</script>
+<style>
+    .dropzone {
+        border-radius: 4px;
+        border: 2px dashed #0087f7 !important;
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1em;
+    }
+
+    /* .dropzone .dz-preview .dz-image {
+        width: 240px;
+        height: 240px;
+    } */
+
+    .dz-image img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .dz-success-mark {
+        background-color: rgb(102, 187, 106, 0.8) !important;
+    }
+
+    .dz-success-mark svg {
+        font-size: 54px;
+        fill: #fff !important;
+    }
+
+    .dropzone.dz-clickable .dz-message {
+        display: none;
+    }
+
+    #mytmp .dz-remove {
+        z-index: 999;
+        position: absolute;
+        display: block;
+        top: 0%;
+        left: 0%;
+        margin-left: -1px;
+        margin-top: -16px;
+    }
+
+    #mytmp .dz-remove svg {
+        fill: #444;
+        cursor: pointer;
+    }
+</style>
+
+
+<!-- @{
+ViewData["Title"] = "Home Page";
+}
+<select name="" id="frontend" style="width: 150px;">
+    <option value="angular">Angular</option>
+    <option value="vue">Vue</option>
+    <option value="react">React</option>
+    <option value="next">Next</option>
+</select>
+
+
+
+Modal
+
+<div>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011-04-25</td>
+                <td>$320,800</td>
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011-07-25</td>
+                <td>$170,750</td>
+            </tr>
+            <tr>
+                <td>Ashton Cox</td>
+                <td>Junior Technical Author</td>
+                <td>San Francisco</td>
+                <td>66</td>
+                <td>2009-01-12</td>
+                <td>$86,000</td>
+            </tr>
+            <tr>
+                <td>Cedric Kelly</td>
+                <td>Senior Javascript Developer</td>
+                <td>Edinburgh</td>
+                <td>22</td>
+                <td>2012-03-29</td>
+                <td>$433,060</td>
+            </tr>
+            <tr>
+                <td>Airi Satou</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>33</td>
+                <td>2008-11-28</td>
+                <td>$162,700</td>
+            </tr>
+            <tr>
+                <td>Brielle Williamson</td>
+                <td>Integration Specialist</td>
+                <td>New York</td>
+                <td>61</td>
+                <td>2012-12-02</td>
+                <td>$372,000</td>
+            </tr>
+            <tr>
+                <td>Herrod Chandler</td>
+                <td>Sales Assistant</td>
+                <td>San Francisco</td>
+                <td>59</td>
+                <td>2012-08-06</td>
+                <td>$137,500</td>
+            </tr>
+            <tr>
+                <td>Rhona Davidson</td>
+                <td>Integration Specialist</td>
+                <td>Tokyo</td>
+                <td>55</td>
+                <td>2010-10-14</td>
+                <td>$327,900</td>
+            </tr>
+            <tr>
+                <td>Colleen Hurst</td>
+                <td>Javascript Developer</td>
+                <td>San Francisco</td>
+                <td>39</td>
+                <td>2009-09-15</td>
+                <td>$205,500</td>
+            </tr>
+            <tr>
+                <td>Sonya Frost</td>
+                <td>Software Engineer</td>
+                <td>Edinburgh</td>
+                <td>23</td>
+                <td>2008-12-13</td>
+                <td>$103,600</td>
+            </tr>
+            <tr>
+                <td>Jena Gaines</td>
+                <td>Office Manager</td>
+                <td>London</td>
+                <td>30</td>
+                <td>2008-12-19</td>
+                <td>$90,560</td>
+            </tr>
+            <tr>
+                <td>Quinn Flynn</td>
+                <td>Support Lead</td>
+                <td>Edinburgh</td>
+                <td>22</td>
+                <td>2013-03-03</td>
+                <td>$342,000</td>
+            </tr>
+            <tr>
+                <td>Charde Marshall</td>
+                <td>Regional Director</td>
+                <td>San Francisco</td>
+                <td>36</td>
+                <td>2008-10-16</td>
+                <td>$470,600</td>
+            </tr>
+            <tr>
+                <td>Haley Kennedy</td>
+                <td>Senior Marketing Designer</td>
+                <td>London</td>
+                <td>43</td>
+                <td>2012-12-18</td>
+                <td>$313,500</td>
+            </tr>
+            <tr>
+                <td>Tatyana Fitzpatrick</td>
+                <td>Regional Director</td>
+                <td>London</td>
+                <td>19</td>
+                <td>2010-03-17</td>
+                <td>$385,750</td>
+            </tr>
+            <tr>
+                <td>Michael Silva</td>
+                <td>Marketing Designer</td>
+                <td>London</td>
+                <td>66</td>
+                <td>2012-11-27</td>
+                <td>$198,500</td>
+            </tr>
+            <tr>
+                <td>Paul Byrd</td>
+                <td>Chief Financial Officer (CFO)</td>
+                <td>New York</td>
+                <td>64</td>
+                <td>2010-06-09</td>
+                <td>$725,000</td>
+            </tr>
+            <tr>
+                <td>Gloria Little</td>
+                <td>Systems Administrator</td>
+                <td>New York</td>
+                <td>59</td>
+                <td>2009-04-10</td>
+                <td>$237,500</td>
+            </tr>
+            <tr>
+                <td>Bradley Greer</td>
+                <td>Software Engineer</td>
+                <td>London</td>
+                <td>41</td>
+                <td>2012-10-13</td>
+                <td>$132,000</td>
+            </tr>
+            <tr>
+                <td>Dai Rios</td>
+                <td>Personnel Lead</td>
+                <td>Edinburgh</td>
+                <td>35</td>
+                <td>2012-09-26</td>
+                <td>$217,500</td>
+            </tr>
+            <tr>
+                <td>Jenette Caldwell</td>
+                <td>Development Lead</td>
+                <td>New York</td>
+                <td>30</td>
+                <td>2011-09-03</td>
+                <td>$345,000</td>
+            </tr>
+            <tr>
+                <td>Yuri Berry</td>
+                <td>Chief Marketing Officer (CMO)</td>
+                <td>New York</td>
+                <td>40</td>
+                <td>2009-06-25</td>
+                <td>$675,000</td>
+            </tr>
+            <tr>
+                <td>Caesar Vance</td>
+                <td>Pre-Sales Support</td>
+                <td>New York</td>
+                <td>21</td>
+                <td>2011-12-12</td>
+                <td>$106,450</td>
+            </tr>
+            <tr>
+                <td>Doris Wilder</td>
+                <td>Sales Assistant</td>
+                <td>Sydney</td>
+                <td>23</td>
+                <td>2010-09-20</td>
+                <td>$85,600</td>
+            </tr>
+            <tr>
+                <td>Angelica Ramos</td>
+                <td>Chief Executive Officer (CEO)</td>
+                <td>London</td>
+                <td>47</td>
+                <td>2009-10-09</td>
+                <td>$1,200,000</td>
+            </tr>
+            <tr>
+                <td>Gavin Joyce</td>
+                <td>Developer</td>
+                <td>Edinburgh</td>
+                <td>42</td>
+                <td>2010-12-22</td>
+                <td>$92,575</td>
+            </tr>
+            <tr>
+                <td>Jennifer Chang</td>
+                <td>Regional Director</td>
+                <td>Singapore</td>
+                <td>28</td>
+                <td>2010-11-14</td>
+                <td>$357,650</td>
+            </tr>
+            <tr>
+                <td>Brenden Wagner</td>
+                <td>Software Engineer</td>
+                <td>San Francisco</td>
+                <td>28</td>
+                <td>2011-06-07</td>
+                <td>$206,850</td>
+            </tr>
+            <tr>
+                <td>Fiona Green</td>
+                <td>Chief Operating Officer (COO)</td>
+                <td>San Francisco</td>
+                <td>48</td>
+                <td>2010-03-11</td>
+                <td>$850,000</td>
+            </tr>
+            <tr>
+                <td>Shou Itou</td>
+                <td>Regional Marketing</td>
+                <td>Tokyo</td>
+                <td>20</td>
+                <td>2011-08-14</td>
+                <td>$163,000</td>
+            </tr>
+            <tr>
+                <td>Michelle House</td>
+                <td>Integration Specialist</td>
+                <td>Sydney</td>
+                <td>37</td>
+                <td>2011-06-02</td>
+                <td>$95,400</td>
+            </tr>
+            <tr>
+                <td>Suki Burks</td>
+                <td>Developer</td>
+                <td>London</td>
+                <td>53</td>
+                <td>2009-10-22</td>
+                <td>$114,500</td>
+            </tr>
+            <tr>
+                <td>Prescott Bartlett</td>
+                <td>Technical Author</td>
+                <td>London</td>
+                <td>27</td>
+                <td>2011-05-07</td>
+                <td>$145,000</td>
+            </tr>
+            <tr>
+                <td>Gavin Cortez</td>
+                <td>Team Leader</td>
+                <td>San Francisco</td>
+                <td>22</td>
+                <td>2008-10-26</td>
+                <td>$235,500</td>
+            </tr>
+            <tr>
+                <td>Martena Mccray</td>
+                <td>Post-Sales support</td>
+                <td>Edinburgh</td>
+                <td>46</td>
+                <td>2011-03-09</td>
+                <td>$324,050</td>
+            </tr>
+            <tr>
+                <td>Unity Butler</td>
+                <td>Marketing Designer</td>
+                <td>San Francisco</td>
+                <td>47</td>
+                <td>2009-12-09</td>
+                <td>$85,675</td>
+            </tr>
+            <tr>
+                <td>Howard Hatfield</td>
+                <td>Office Manager</td>
+                <td>San Francisco</td>
+                <td>51</td>
+                <td>2008-12-16</td>
+                <td>$164,500</td>
+            </tr>
+            <tr>
+                <td>Hope Fuentes</td>
+                <td>Secretary</td>
+                <td>San Francisco</td>
+                <td>41</td>
+                <td>2010-02-12</td>
+                <td>$109,850</td>
+            </tr>
+            <tr>
+                <td>Vivian Harrell</td>
+                <td>Financial Controller</td>
+                <td>San Francisco</td>
+                <td>62</td>
+                <td>2009-02-14</td>
+                <td>$452,500</td>
+            </tr>
+            <tr>
+                <td>Timothy Mooney</td>
+                <td>Office Manager</td>
+                <td>London</td>
+                <td>37</td>
+                <td>2008-12-11</td>
+                <td>$136,200</td>
+            </tr>
+            <tr>
+                <td>Jackson Bradshaw</td>
+                <td>Director</td>
+                <td>New York</td>
+                <td>65</td>
+                <td>2008-09-26</td>
+                <td>$645,750</td>
+            </tr>
+            <tr>
+                <td>Olivia Liang</td>
+                <td>Support Engineer</td>
+                <td>Singapore</td>
+                <td>64</td>
+                <td>2011-02-03</td>
+                <td>$234,500</td>
+            </tr>
+            <tr>
+                <td>Bruno Nash</td>
+                <td>Software Engineer</td>
+                <td>London</td>
+                <td>38</td>
+                <td>2011-05-03</td>
+                <td>$163,500</td>
+            </tr>
+            <tr>
+                <td>Sakura Yamamoto</td>
+                <td>Support Engineer</td>
+                <td>Tokyo</td>
+                <td>37</td>
+                <td>2009-08-19</td>
+                <td>$139,575</td>
+            </tr>
+            <tr>
+                <td>Thor Walton</td>
+                <td>Developer</td>
+                <td>New York</td>
+                <td>61</td>
+                <td>2013-08-11</td>
+                <td>$98,540</td>
+            </tr>
+            <tr>
+                <td>Finn Camacho</td>
+                <td>Support Engineer</td>
+                <td>San Francisco</td>
+                <td>47</td>
+                <td>2009-07-07</td>
+                <td>$87,500</td>
+            </tr>
+            <tr>
+                <td>Serge Baldwin</td>
+                <td>Data Coordinator</td>
+                <td>Singapore</td>
+                <td>64</td>
+                <td>2012-04-09</td>
+                <td>$138,575</td>
+            </tr>
+            <tr>
+                <td>Zenaida Frank</td>
+                <td>Software Engineer</td>
+                <td>New York</td>
+                <td>63</td>
+                <td>2010-01-04</td>
+                <td>$125,250</td>
+            </tr>
+            <tr>
+                <td>Zorita Serrano</td>
+                <td>Software Engineer</td>
+                <td>San Francisco</td>
+                <td>56</td>
+                <td>2012-06-01</td>
+                <td>$115,000</td>
+            </tr>
+            <tr>
+                <td>Jennifer Acosta</td>
+                <td>Junior Javascript Developer</td>
+                <td>Edinburgh</td>
+                <td>43</td>
+                <td>2013-02-01</td>
+                <td>$75,650</td>
+            </tr>
+            <tr>
+                <td>Cara Stevens</td>
+                <td>Sales Assistant</td>
+                <td>New York</td>
+                <td>46</td>
+                <td>2011-12-06</td>
+                <td>$145,600</td>
+            </tr>
+            <tr>
+                <td>Hermione Butler</td>
+                <td>Regional Director</td>
+                <td>London</td>
+                <td>47</td>
+                <td>2011-03-21</td>
+                <td>$356,250</td>
+            </tr>
+            <tr>
+                <td>Lael Greer</td>
+                <td>Systems Administrator</td>
+                <td>London</td>
+                <td>21</td>
+                <td>2009-02-27</td>
+                <td>$103,500</td>
+            </tr>
+            <tr>
+                <td>Jonas Alexander</td>
+                <td>Developer</td>
+                <td>San Francisco</td>
+                <td>30</td>
+                <td>2010-07-14</td>
+                <td>$86,500</td>
+            </tr>
+            <tr>
+                <td>Shad Decker</td>
+                <td>Regional Director</td>
+                <td>Edinburgh</td>
+                <td>51</td>
+                <td>2008-11-13</td>
+                <td>$183,000</td>
+            </tr>
+            <tr>
+                <td>Michael Bruce</td>
+                <td>Javascript Developer</td>
+                <td>Singapore</td>
+                <td>29</td>
+                <td>2011-06-27</td>
+                <td>$183,000</td>
+            </tr>
+            <tr>
+                <td>Donna Snider</td>
+                <td>Customer Support</td>
+                <td>New York</td>
+                <td>27</td>
+                <td>2011-01-25</td>
+                <td>$112,000</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    })
+    
+</script> 
